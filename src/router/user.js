@@ -3,11 +3,12 @@ const {
   regUser
 } = require('../controller/user')
 const {
-  verifyUser
+  verifyUser,
+  handlePassword
 } = require('../middleware/user')
 
 const userRouter = new Router({prefix: '/users'})
 
-userRouter.post('/',verifyUser, regUser)
+userRouter.post('/',verifyUser, handlePassword, regUser)
 
 module.exports = userRouter
