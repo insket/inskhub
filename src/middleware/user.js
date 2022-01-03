@@ -68,6 +68,10 @@ const verifyLogin = async (ctx, next) => {
 const verifyAuth = async (ctx, next) => {
   // 获取token
   const authorization = ctx.headers.authorization
+  if (!authorization) {
+    const err = new Error(errorTypes.UNAUTHTOKEN)
+    return ctx.app.emit('error', err, ctx)
+  }
   const token = authorization.replace('Bearer ', '')
 
   // 验证token
