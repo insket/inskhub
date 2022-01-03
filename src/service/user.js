@@ -12,7 +12,7 @@ class UserService{
     return result
   }
 
-  // 得到用户的名字
+  // 查询用户的名字
   async getUserByName(name) {
     const statement = `SELECT * FROM users WHERE name = ?;`
     const result = await conn.execute(statement, [name])
