@@ -20,6 +20,10 @@ const errHandler = (err, ctx) => {
       code = 400 // 参数错误
       message = '用户名或密码错误'
       break;
+    case errorTypes.UNAUTHTOKEN:
+      code = 401 // 参数错误
+      message = '无效的token'
+      break;
     default:
       code = 404
       message = 'NOT FOUND'

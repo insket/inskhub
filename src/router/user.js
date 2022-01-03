@@ -1,11 +1,13 @@
 const Router = require('koa-router')
 const {
   regUser,
-  logUser
+  logUser,
+  success
 } = require('../controller/user')
 const {
   verifyUser,
   verifyLogin,
+  verifyAuth,
   handlePassword
 } = require('../middleware/user')
 
@@ -16,5 +18,6 @@ userRouter.post('/',verifyUser, handlePassword, regUser)
 
 // 登录
 userRouter.post('/login',verifyLogin, logUser)
+userRouter.get('/test', verifyAuth, success)
 
 module.exports = userRouter

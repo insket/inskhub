@@ -1,8 +1,12 @@
 const {
   regUser
 } = require('../service/user')
+const jwt = require('jsonwebtoken')
+const {
+  PRIVATE_KEY
+} = require('../app/config')
 
-class UserController{
+class UserController {
   // 注册用户的逻辑
   async regUser(ctx, next) {
     // 获取用户请求传递的参数
@@ -17,8 +21,29 @@ class UserController{
 
   // 用户登录的逻辑
   async logUser(ctx, next) {
-    const { name } = ctx.request.body
-    ctx.body = `${name} 登陆成功`
+    // 从ctx.user中拿到用户信息
+    const {
+      id,
+      name
+    } = ctx.user
+    const token = jwt.sign({
+      id,
+      name
+    }, PRIVATE_KEY, {
+      expiresIn: 60 * 60 * 24 * 7,
+      algorithm: 'RS256'
+    })
+
+    ctx.body = {
+      id,
+      name,
+      token
+    }
+  }
+
+  async success(ctx, next) {
+    console.log('asdad');
+    ctx.body = '有效的token'
   }
 }
 

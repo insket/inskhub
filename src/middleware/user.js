@@ -3,6 +3,8 @@ const {
   getUserByName
 } = require('../service/user')
 const md5Password = require('../utils/md5-password')
+const jwt = require('jsonwebtoken')
+const { PUBLIC_KEY } = require('../app/config')
 
 // 注册 校验name 和 password
 const verifyUser = async (ctx, next) => {
@@ -56,7 +58,29 @@ const verifyLogin = async (ctx, next) => {
     return ctx.app.emit('error', err, ctx)
   }
 
+  // 向ctx中添加user
+  ctx.user = user
+
   await next()
+}
+
+// 校验token
+const verifyAuth = async (ctx, next) => {
+  // 获取token
+  const authorization = ctx.headers.authorization
+  const token = authorization.replace('Bearer ', '')
+
+  // 验证token
+  try {
+    const result = jwt.verify(token, PUBLIC_KEY, {
+      algorithms: ['RS256']
+    });
+    ctx.user = result;
+    await next();
+  } catch (error) {
+    const err = new Error(errorTypes.UNAUTHTOKEN)
+    ctx.app.emit('error', err, ctx)
+  }
 }
 
 // 将参数替换为加密后的密码
@@ -73,5 +97,6 @@ const handlePassword = async (ctx, next) => {
 module.exports = {
   verifyUser,
   verifyLogin,
-  handlePassword
+  handlePassword,
+  verifyAuth
 }
