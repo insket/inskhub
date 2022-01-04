@@ -1,5 +1,6 @@
 const errorTypes = require('../constants/error-type')
 const { getUserByName } = require('../service/user')
+const { checkMoment } = require('../service/auth')
 const md5Password = require('../utils/md5-password')
 const jwt = require('jsonwebtoken')
 const { PUBLIC_KEY } = require('../app/config')
@@ -89,9 +90,26 @@ const handlePassword = async (ctx, next) => {
 	await next()
 }
 
+// 校验修改动态是不是本人
+const verifyPermission = async (ctx, next) => {
+	// 获取参数
+	const { momentId } = ctx.params
+	const { id } = ctx.user
+
+  // 查询是否具有修改权限
+  const isPermission  = await checkMoment(momentId, id)
+  if (!isPermission) {
+    const err = new Error(errorTypes.UNPERMISSION)
+    return ctx.app.emit('error', err, ctx)
+  }
+
+	await next()
+}
+
 module.exports = {
 	verifyUser,
 	verifyLogin,
 	handlePassword,
 	verifyAuth,
+	verifyPermission,
 }

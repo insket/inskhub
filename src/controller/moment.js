@@ -1,4 +1,4 @@
-const { insertDynamic, getMomentById, getMomentLIst } = require('../service/moment')
+const { insertDynamic, getMomentById, getMomentLIst, updateMoment } = require('../service/moment')
 
 class MomentController {
 	// 发表动态
@@ -26,13 +26,24 @@ class MomentController {
 
 	// 查询多条动态
 	async listDynamic(ctx, next) {
-    // 获取offset / limit
-    const { offset, limit } = ctx.query
-    // 从数据库中查询动态
-    const result = await getMomentLIst(offset, limit)
+		// 获取offset / limit
+		const { offset, limit } = ctx.query
+		// 从数据库中查询动态
+		const result = await getMomentLIst(offset, limit)
 
-    ctx.body = result
-  }
+		ctx.body = result
+	}
+
+	// 更新动态
+	async updateDynamic(ctx, next) {
+		// 获取动态id  修改内容
+		const { momentId } = ctx.params
+		const { content } = ctx.request.body
+ 
+		const result = await updateMoment(content,momentId)
+
+		ctx.body = result
+	}
 }
 
 module.exports = new MomentController()
