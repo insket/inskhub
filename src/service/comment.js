@@ -23,7 +23,13 @@ class CommentService {
 		return result
 	}
 
-  // 删除pinglun
+	// 删除评论
+	async removeCom(commentId) {
+		const statement = `DELETE FROM comment WHERE id = ?`
+
+		const [result] = await conn.execute(statement, [commentId])
+		return result
+	}
 }
 
 module.exports = new CommentService()
