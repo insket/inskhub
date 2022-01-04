@@ -1,4 +1,4 @@
-const { insertDynamic, getMomentById, getMomentLIst, updateMoment } = require('../service/moment')
+const { insertDynamic, getMomentById, getMomentLIst, updateMoment, removeMoment } = require('../service/moment')
 
 class MomentController {
 	// 发表动态
@@ -39,9 +39,17 @@ class MomentController {
 		// 获取动态id  修改内容
 		const { momentId } = ctx.params
 		const { content } = ctx.request.body
- 
-		const result = await updateMoment(content,momentId)
 
+		const result = await updateMoment(content, momentId)
+
+		ctx.body = result
+	}
+
+	// 删除动态
+	async removeDynamic(ctx, next) {
+		const { momentId } = ctx.params
+
+		const result = await removeMoment(momentId)
 		ctx.body = result
 	}
 }
