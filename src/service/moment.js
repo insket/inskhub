@@ -3,7 +3,8 @@ const conn = require('../app/database')
 // sql相同的片段
 const sqlFragment = `
   SELECT m.id mid, m.content content, m.createAt createTime, m.updateAt updateTime,
-  JSON_OBJECT('id', u.id, 'name', u.name) userInfo
+  JSON_OBJECT('id', u.id, 'name', u.name) userInfo,
+  (SELECT COUNT(*) FROM comment c WHERE c.moment_id = m.id) commentCount
   FROM moment m
   LEFT JOIN users u ON m.user_id = u.id
 `

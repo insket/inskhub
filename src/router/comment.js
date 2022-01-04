@@ -11,10 +11,9 @@ commentRouter.post('/', verifyAuth, createComment)
 commentRouter.post('/reply/:commentId', verifyAuth, replyComment)
 
 // 修改评论
-commentRouter.patch('/:commentId', verifyAuth,verifyPermission, updateComment)
+commentRouter.patch('/:commentId', verifyAuth, verifyPermission, updateComment)
 
 // 删除评论
-commentRouter.delete('/:commentId', verifyAuth,verifyPermission, removeComment)
-
+commentRouter.delete('/:commentId', verifyAuth, verifyPermission, removeComment)
 
 module.exports = commentRouter
