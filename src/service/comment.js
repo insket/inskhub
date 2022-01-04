@@ -14,6 +14,16 @@ class CommentService {
 		const [result] = await conn.execute(statement, [content, momentId, id, commentId])
 		return result
 	}
+
+	// 修改评论
+	async updateCom(commentId, content) {
+		const statement = `UPDATE comment SET content = ? WHERE id = ?;`
+
+		const [result] = await conn.execute(statement, [content, commentId])
+		return result
+	}
+
+  // 删除pinglun
 }
 
 module.exports = new CommentService()

@@ -1,4 +1,4 @@
-const { addComment, replyCom } = require('../service/comment')
+const { addComment, replyCom, updateCom } = require('../service/comment')
 
 class CommentController {
 	// 发表评论
@@ -19,6 +19,16 @@ class CommentController {
 		const { id } = ctx.user
 
 		const result = await replyCom(momentId, content, commentId, id)
+
+		ctx.body = result
+	}
+
+	// 修改评论
+	async updateComment(ctx, next) {
+		const { commentId } = ctx.params
+		const { content } = ctx.request.body
+
+		const result = await updateCom(commentId, content)
 
 		ctx.body = result
 	}
