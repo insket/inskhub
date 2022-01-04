@@ -1,11 +1,19 @@
 const conn = require('../app/database')
 
-class CommentService{
-  async addComment(momentId, content, id) {
-    const statement = `INSERT INTO comment (content,moment_id,user_id) VALUES (?,?,?);`
-    const [result] = await conn.execute(statement, [content, momentId, id])
-    return result
-  }
+class CommentService {
+	// 发表评论
+	async addComment(momentId, content, id) {
+		const statement = `INSERT INTO comment (content,moment_id,user_id) VALUES (?,?,?);`
+		const [result] = await conn.execute(statement, [content, momentId, id])
+		return result
+	}
+
+	// 回复评论
+	async replyCom(momentId, content, commentId, id) {
+		const statement = `INSERT INTO comment (content,moment_id,user_id, comment_id) VALUES (?, ?, ?, ?);`
+		const [result] = await conn.execute(statement, [content, momentId, id, commentId])
+		return result
+	}
 }
 
 module.exports = new CommentService()
