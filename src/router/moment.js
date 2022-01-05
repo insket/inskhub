@@ -1,6 +1,6 @@
 const Router = require('koa-router')
 const { verifyAuth, verifyPermission } = require('../middleware/user')
-const { createDynamic, detailDynamic, listDynamic, updateDynamic, removeDynamic } = require('../controller/moment')
+const { createDynamic, detailDynamic, listDynamic, updateDynamic, removeDynamic, addLabels } = require('../controller/moment')
 
 const momentRouter = new Router({ prefix: '/moment' })
 
@@ -18,5 +18,8 @@ momentRouter.patch('/:momentId', verifyAuth, verifyPermission, updateDynamic)
 
 // 删除动态 
 momentRouter.delete('/:momentId', verifyAuth, verifyPermission, removeDynamic)
+
+// 给动态添加标签
+momentRouter.post('/:momentId/labels', verifyAuth, verifyPermission, addLabels)
 
 module.exports = momentRouter

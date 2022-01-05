@@ -65,6 +65,24 @@ class MomentService {
 		const [result] = await conn.execute(statement, [id])
 		return result
 	}
+
+  // 添加标签
+  async AddLabelsSer(momentId, label) {
+    // 查询标签对应的数据
+    const statement = `SELECT * FROM label WHERE name = ?;`
+    const [result] = await conn.execute(statement, [label])
+
+    // 如果动态中含有标签不添加
+    const hasLabel = `SELECT * FROM moment_label WHERE moment_id = ? AND label_id = ?;`
+    const ishas = await conn.execute(hasLabel, [momentId, result[0].id])
+    if (ishas[0].length) {
+      return
+    }
+    //添加标签
+    const insert = `INSERT INTO moment_label (moment_id, label_id) VALUES (?,?);`
+    const [data] = await conn.execute(insert, [momentId, result[0].id])
+    return data
+  }
 }
 
 module.exports = new MomentService()

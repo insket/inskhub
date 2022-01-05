@@ -1,4 +1,4 @@
-const { insertDynamic, getMomentById, getMomentLIst, updateMoment, removeMoment } = require('../service/moment')
+const { insertDynamic, getMomentById, getMomentLIst, updateMoment, removeMoment, AddLabelsSer } = require('../service/moment')
 
 class MomentController {
 	// 发表动态
@@ -52,6 +52,18 @@ class MomentController {
 		const result = await removeMoment(momentId)
 		ctx.body = result
 	}
+
+  // 添加标签
+  async addLabels(ctx, next) {
+    const {labels} = ctx.request.body
+    const { momentId} = ctx.params
+
+    for (const label of labels) {
+      await AddLabelsSer(momentId, label)
+    }
+
+    ctx.body = '添加标签成功'
+  }
 }
 
 module.exports = new MomentController()
