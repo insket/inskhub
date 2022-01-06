@@ -18,6 +18,13 @@ class UserService{
     const result = await conn.execute(statement, [name])
     return result[0]
   }
+
+  // 将头像保存到users表中
+  async updateAvatorUrlById(avatorUrl, id) {
+    const statement = `UPDATE users SET avator_url = ? WHERE id = ?;`
+    const result = await conn.execute(statement, [avatorUrl, id])
+    return result
+  }
 }
 
 module.exports = new UserService()
