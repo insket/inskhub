@@ -24,6 +24,23 @@ class FileService {
     const [result] = await conn.execute(statement, [userId])
     return result[0]
   }
+
+  // 上传动态图片
+  async savePic(filename, mimetype, size, id, momentId) {
+    const statement = `INSERT INTO picture (filename, mimetype, size, user_id, moment_id) VALUES (?,?,?,?,?);`
+    const [result] = await conn.execute(statement, [filename, mimetype, size, id, momentId])
+    console.log(result);
+    return result
+  }
+
+  // 查询图片类型
+  async picTypeSer(filename) {
+    console.log(filename);
+    const statement = `SELECT * FROM picture WHERE filename = ?`
+    const [result] = await conn.execute(statement, [filename])
+    console.log(result);
+    return result[0]
+  }
 }
 
 module.exports = new FileService()
